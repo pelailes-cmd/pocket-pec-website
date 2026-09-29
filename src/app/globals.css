@@ -1,0 +1,235 @@
+@import "tailwindcss";
+@import "../styles/phone.css";
+@import "../styles/app-ui.css";
+@import "../styles/effects.css";
+
+/*
+ * Brand tokens. Change colours here: every component (including canvas and SVG
+ * effects, which read these variables at runtime) follows them.
+ */
+@theme {
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --font-app: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --color-void: #000000;
+  --color-graphite-950: #040506;
+  --color-graphite-900: #08090b;
+  --color-graphite-850: #0c0e11;
+  --color-graphite-800: #111418;
+  --color-graphite-700: #191d23;
+  --color-graphite-600: #262b33;
+  --color-graphite-500: #353b45;
+  --color-steel-500: #5f6874;
+  --color-steel-400: #8b94a0;
+  --color-steel-300: #b3bac4;
+  --color-steel-200: #d3d8de;
+  --color-steel-100: #eceef1;
+
+  /* Controlled electric-blue highlight */
+  --color-electric-700: #1747c7;
+  --color-electric-600: #1f5eff;
+  --color-electric-500: #3b82ff;
+  --color-electric-400: #66a1ff;
+  --color-electric-300: #9cc2ff;
+
+  /* Philippine accents, used sparingly */
+  --color-ph-blue: #0038a8;
+  --color-ph-red: #ce1126;
+  --color-ph-gold: #fcd116;
+
+  /* App brand (lib/core/brand.dart) */
+  --color-navy-950: #041029;
+  --color-navy-900: #0a1b3d;
+  --color-navy-800: #102a56;
+  --color-navy-700: #173a73;
+  --color-navy-600: #1e4b92;
+  --color-navy-300: #9db8e8;
+  --color-navy-100: #dce6f5;
+  --color-gold-500: #fcc010;
+  --color-gold-300: #ffd95a;
+  --color-gold-100: #fff3c4;
+
+  --ease-cine: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    background: #000;
+    color-scheme: dark;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    background: #000;
+    color: var(--color-steel-100);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+  ::selection {
+    background: color-mix(in srgb, var(--color-electric-500) 40%, transparent);
+    color: #fff;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-electric-400);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  img {
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+}
+
+/* Lenis */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+@layer components {
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.4;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-steel-400);
+  }
+  .spec {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-steel-500);
+  }
+  .display {
+    font-weight: 600;
+    letter-spacing: -0.045em;
+    line-height: 0.92;
+  }
+  .headline {
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 1.02;
+  }
+  .text-metal {
+    background: linear-gradient(180deg, #ffffff 0%, #e4e7ec 38%, #9aa2ad 78%, #6d7580 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .text-dim {
+    color: var(--color-steel-500);
+  }
+  .text-electric {
+    background: linear-gradient(90deg, var(--color-electric-300), var(--color-electric-500));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Buttons */
+  .btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    height: 3rem;
+    padding: 0 1.4rem;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+    transition:
+      transform 0.5s var(--ease-cine),
+      background-color 0.4s var(--ease-cine),
+      box-shadow 0.5s var(--ease-cine),
+      border-color 0.4s var(--ease-cine),
+      color 0.4s var(--ease-cine);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .btn:active {
+    transform: scale(0.97);
+  }
+  .btn-primary {
+    background: #fff;
+    color: #000;
+    box-shadow:
+      0 0 0 1px rgba(255, 255, 255, 0.9),
+      0 10px 40px -12px color-mix(in srgb, var(--color-electric-500) 70%, transparent);
+  }
+  .btn-primary:hover {
+    box-shadow:
+      0 0 0 1px #fff,
+      0 0 0 6px color-mix(in srgb, var(--color-electric-500) 18%, transparent),
+      0 18px 60px -10px color-mix(in srgb, var(--color-electric-500) 90%, transparent);
+  }
+  .btn-secondary {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.03);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+  }
+  .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.34);
+  }
+  .btn-sm {
+    height: 2.25rem;
+    padding: 0 1rem;
+    font-size: 0.85rem;
+  }
+  .btn .btn-arrow {
+    transition: transform 0.5s var(--ease-cine);
+  }
+  .btn:hover .btn-arrow {
+    transform: translateX(3px);
+  }
+
+  .glass {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.02));
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.09),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+    backdrop-filter: blur(18px) saturate(140%);
+  }
+
+  .hairline {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.16) 20%, rgba(255, 255, 255, 0.16) 80%, transparent);
+  }
+  .ph-rule {
+    height: 2px;
+    width: 42px;
+    background: linear-gradient(90deg, var(--color-ph-blue) 0 45%, var(--color-ph-red) 45% 90%, var(--color-ph-gold) 90% 100%);
+    border-radius: 2px;
+  }
+}
+
+/* Screen-reader only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

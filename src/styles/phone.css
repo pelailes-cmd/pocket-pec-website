@@ -1,0 +1,214 @@
+/*
+ * The Pocket PEC hero device: a CSS-3D smartphone.
+ *
+ * Structure (see components/phone/PhoneRig.tsx):
+ *   .pp-sizer   responsive base scale, centred on its anchor point
+ *   .pp-persp   camera (perspective); all phones in one stage share its centre
+ *   .pp-rig     animated by GSAP (x / y / z / rotations)
+ *   .pp-float   idle floating motion (CSS)
+ *   .pp-phone   the device: back face, extruded edge facets, front glass
+ *
+ * Geometry constants live in components/phone/geometry.ts and must match the
+ * sizes below (380 x 800, corner radius 58, thickness 12, bezel 10).
+ */
+
+.pp-sizer {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 380px;
+  height: 800px;
+  margin: -400px 0 0 -190px;
+  --phone-zoom: 1;
+  --phone-k: calc(var(--phone-s, 0.6) * var(--phone-zoom, 1));
+  transform: scale3d(var(--phone-k), var(--phone-k), var(--phone-k));
+  pointer-events: none;
+}
+.pp-persp {
+  position: absolute;
+  inset: 0;
+  perspective: var(--phone-persp, 2400px);
+  perspective-origin: 50% 50%;
+}
+.pp-rig,
+.pp-float,
+.pp-phone {
+  position: absolute;
+  inset: 0;
+  transform-style: preserve-3d;
+}
+.pp-rig {
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pp-float.is-floating {
+    animation: pp-float 9s ease-in-out infinite;
+  }
+}
+@keyframes pp-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotateY(0deg) rotateX(0deg);
+  }
+  33% {
+    transform: translate3d(0, -12px, 0) rotateY(4deg) rotateX(-1.5deg);
+  }
+  66% {
+    transform: translate3d(0, 6px, 0) rotateY(-3deg) rotateX(1deg);
+  }
+}
+
+/* Faces */
+.pp-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 58px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.pp-front {
+  transform: translateZ(6px);
+  background: #030405;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2),
+    inset 0 0 0 2.5px rgba(0, 0, 0, 0.95),
+    inset 0 0 0 3.5px rgba(255, 255, 255, 0.06),
+    inset 0 0 18px rgba(255, 255, 255, 0.03);
+}
+.pp-back {
+  transform: rotateY(180deg) translateZ(6px);
+  background:
+    radial-gradient(120% 70% at 20% 0%, rgba(255, 255, 255, 0.1), transparent 55%),
+    linear-gradient(150deg, #30343b 0%, #1a1d22 45%, #0e1013 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+    inset 0 0 40px rgba(0, 0, 0, 0.55);
+}
+.pp-back::after {
+  /* frosted glass sheen */
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.06) 48%, transparent 62%);
+}
+.pp-camera {
+  position: absolute;
+  left: 26px;
+  top: 26px;
+  width: 132px;
+  height: 132px;
+  border-radius: 38px;
+  background: linear-gradient(145deg, #2a2e35, #121418);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.14),
+    0 6px 16px rgba(0, 0, 0, 0.5);
+}
+.pp-lens {
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 35% 30%, rgba(120, 150, 255, 0.55) 0 6%, transparent 18%),
+    radial-gradient(circle at 50% 50%, #05070c 0 38%, #1b2130 40% 56%, #08090c 60% 100%);
+  box-shadow:
+    inset 0 0 0 3px #2c3139,
+    inset 0 0 0 4px rgba(255, 255, 255, 0.12),
+    0 2px 6px rgba(0, 0, 0, 0.6);
+}
+.pp-flash {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #f4f1e6 0 30%, #b9b39c 60%, #5b584c 100%);
+  box-shadow: inset 0 0 0 1.5px #2c3139;
+}
+
+/* Extruded edge facets (inline positioned) */
+.pp-facet,
+.pp-btn {
+  position: absolute;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Screen */
+.pp-screen {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  width: 360px;
+  height: 780px;
+  border-radius: 48px;
+  overflow: hidden;
+  background: #000;
+  isolation: isolate;
+  /* Keeps the rounded clip crisp while the phone is transformed */
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+}
+.pp-screen-off {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 40;
+}
+.pp-punch {
+  position: absolute;
+  left: 50%;
+  top: 22px;
+  width: 13px;
+  height: 13px;
+  margin-left: -6.5px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #2a3040 0 18%, #07080b 40%, #000 100%);
+  box-shadow: 0 0 0 1.5px rgba(0, 0, 0, 0.85);
+  z-index: 50;
+}
+.pp-glare {
+  position: absolute;
+  inset: 0;
+  border-radius: 58px;
+  pointer-events: none;
+  z-index: 60;
+  background: linear-gradient(
+    116deg,
+    rgba(255, 255, 255, 0) 32%,
+    rgba(255, 255, 255, 0.085) 42%,
+    rgba(255, 255, 255, 0.025) 49%,
+    rgba(255, 255, 255, 0) 58%
+  );
+  background-size: 320% 100%;
+  background-position: var(--glare-x, 62%) 0;
+}
+
+/* Soft backlight that travels with the device */
+.pp-backlight {
+  position: absolute;
+  left: -40%;
+  top: -20%;
+  width: 180%;
+  height: 140%;
+  transform: translateZ(-80px);
+  background: radial-gradient(closest-side, rgba(59, 130, 255, 0.22), rgba(59, 130, 255, 0.06) 55%, transparent 75%);
+  pointer-events: none;
+}
+
+/* Stacked screens inside one phone */
+.screen-stack {
+  position: absolute;
+  inset: 0;
+}
+.screen-stack > * {
+  position: absolute;
+  inset: 0;
+}
+/* Only the first screen shows until an animation reveals another
+   (GSAP's autoAlpha writes an inline visibility that wins). */
+.screen-stack > *:not(:first-child) {
+  visibility: hidden;
+}
