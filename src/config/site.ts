@@ -15,6 +15,9 @@
 
 const env = (value: string | undefined) => (value ?? "").trim();
 
+/** Prefix for files in /public when the site is served from a sub-path. */
+export const asset = (path: string) => `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}${path}`;
+
 export const site = {
   name: "Pocket PEC",
   wordmark: "POCKET PEC",
@@ -89,8 +92,8 @@ export const links = {
   howItWorks: "#how-it-works",
   features: "#features",
   about: "#why",
-  privacy: "/privacy/",
-  terms: "/terms/",
+  privacy: asset("/privacy/"),
+  terms: asset("/terms/"),
   contact: contactEmail ? `mailto:${contactEmail}` : "mailto:hello@example.com",
   contactIsPlaceholder: !contactEmail,
 };
@@ -124,5 +127,3 @@ export const chapters = [
   "Download",
 ] as const;
 
-/** Prefix for files in /public when the site is served from a sub-path. */
-export const asset = (path: string) => `${process.env.NEXT_PUBLIC_BASE_PATH ?? ""}${path}`;

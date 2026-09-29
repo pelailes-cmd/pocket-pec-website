@@ -117,6 +117,12 @@ or Edge.
 
 ## Deploy
 
+**GitHub Pages (set up):** `.github/workflows/deploy.yml` builds and publishes on
+every push to `main`, at `https://<user>.github.io/<repo>/`. One-time: Settings →
+Pages → Source: GitHub Actions. Store/QR/contact links can be set as repository
+*variables* (`GOOGLE_PLAY_URL`, `APP_STORE_URL`, `DOWNLOAD_URL`, `CONTACT_EMAIL`).
+
+**Elsewhere:** 
 `npm run build` and upload `out/` to any static host (Vercel, Netlify,
 Cloudflare Pages, GitHub Pages, S3). Set the env vars above in the host's build
 settings.
