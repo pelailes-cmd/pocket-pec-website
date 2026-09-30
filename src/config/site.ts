@@ -22,8 +22,8 @@ export const asset = (path: string) => `${process.env.NEXT_PUBLIC_BASE_PATH ?? "
 export const site = {
   name: "Pocket PEC",
   wordmark: "POCKET PEC",
-  /** env: NEXT_PUBLIC_SITE_URL. Replace before launch. */
-  url: env(process.env.NEXT_PUBLIC_SITE_URL) || "https://example.com",
+  /** env: NEXT_PUBLIC_SITE_URL (the GitHub Pages workflow sets it from the Pages domain). */
+  url: env(process.env.NEXT_PUBLIC_SITE_URL) || "https://pocketpec.space",
   title: "Pocket PEC: The Philippine Electrical Code. In your pocket.",
   description:
     "Pocket PEC is a mobile reference app that makes the Philippine Electrical Code faster to search and easier to read. Articles, tables, and references for Electrical Practitioners in the Philippines.",
@@ -82,7 +82,8 @@ export const downloads = {
  * read from dist/pocket-pec-1.0.0-build1.apk.
  */
 export const apk = {
-  url: env(process.env.NEXT_PUBLIC_APK_URL),
+  // Always the newest GitHub Release asset named "pocket-pec.apk".
+  url: env(process.env.NEXT_PUBLIC_APK_URL) || "https://github.com/pelailes-cmd/pocket-pec-website/releases/latest/download/pocket-pec.apk",
   version: "1.0.0 (build 1)",
   size: "367 MB",
   requires: "Android 7.0 or later",
@@ -99,7 +100,7 @@ export const publishedPlatforms = [
 ];
 
 /** The site's own download page (install steps + APK link). */
-export const downloadPage = `${site.url === "https://example.com" ? "" : site.url}${asset("/download/")}`;
+export const downloadPage = `${site.url}${asset("/download/")}`;
 
 /**
  * QR destination. env: NEXT_PUBLIC_DOWNLOAD_URL; otherwise the site's /download
@@ -112,7 +113,12 @@ export const qrUrl =
   downloads.stores.find(isPublished)?.url ||
   "";
 
-const contactEmail = env(process.env.NEXT_PUBLIC_CONTACT_EMAIL);
+/** Public contact details (footer, download page, legal pages). */
+export const contact = {
+  email: env(process.env.NEXT_PUBLIC_CONTACT_EMAIL) || "x.ailespel@gmail.com",
+  phone: "0960 379 8503",
+  phoneHref: "tel:+639603798503",
+};
 
 export const links = {
   download: "#download",
@@ -121,8 +127,8 @@ export const links = {
   about: "#why",
   privacy: asset("/privacy/"),
   terms: asset("/terms/"),
-  contact: contactEmail ? `mailto:${contactEmail}` : "mailto:hello@example.com",
-  contactIsPlaceholder: !contactEmail,
+  contact: `mailto:${contact.email}`,
+  phone: contact.phoneHref,
 };
 
 /** Add social profiles here; the footer lists them automatically. */

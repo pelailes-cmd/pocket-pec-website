@@ -1,5 +1,5 @@
 import { copy } from "@/config/content";
-import { asset, links, site, social } from "@/config/site";
+import { asset, contact, links, site, social } from "@/config/site";
 
 const LINKS = [
   { label: "Download", href: links.download },
@@ -20,6 +20,14 @@ export function Footer() {
               <span className="text-[15px] font-semibold tracking-[0.22em] text-white">{site.wordmark}</span>
             </a>
             <p className="mt-4 text-[15px] text-steel-400">{copy.footer.tagline}</p>
+            <p className="mt-5 flex flex-wrap gap-x-5 gap-y-1 text-[14px]">
+              <a href={links.contact} className="text-steel-300 transition-colors hover:text-white">
+                {contact.email}
+              </a>
+              <a href={links.phone} className="text-steel-300 transition-colors hover:text-white">
+                {contact.phone}
+              </a>
+            </p>
           </div>
           <nav aria-label="Footer">
             <ul className="flex flex-wrap gap-x-8 gap-y-3">

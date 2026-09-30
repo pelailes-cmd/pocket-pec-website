@@ -125,10 +125,12 @@ Settings → Pages, re-run the workflow. Store/QR/contact/APK links can be set
 as repository *variables* (`APK_URL`, `GOOGLE_PLAY_URL`, `APP_STORE_URL`,
 `DOWNLOAD_URL`, `CONTACT_EMAIL`).
 
-**Android APK:** set `APK_URL` to the file's public URL to show the
-"Download for Android" button, the `/download/` install page and point the QR
-code at `/download/`. Update `apk` in `src/config/site.ts` (version, size,
-SHA-256) for every new build.
+**Android APK:** the download button links to
+`releases/latest/download/pocket-pec.apk`, i.e. the file named `pocket-pec.apk`
+in the newest GitHub Release. To ship an update: create a new release (e.g.
+`v1.0.1`), attach the new APK named exactly `pocket-pec.apk`, then update `apk`
+in `src/config/site.ts` (version, size, SHA-256) and push. The QR code points at
+`/download/`, so it never needs reprinting.
 
 **Elsewhere:** 
 `npm run build` and upload `out/` to any static host (Vercel, Netlify,

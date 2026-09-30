@@ -1,7 +1,7 @@
 import { Download, ShieldCheck } from "lucide-react";
 import type { Metadata } from "next";
 import { StoreButtons } from "@/components/ui/StoreButtons";
-import { apk, asset, links, site } from "@/config/site";
+import { apk, asset, contact, links, site } from "@/config/site";
 
 export const metadata: Metadata = {
   title: "Download Pocket PEC for Android",
@@ -58,9 +58,13 @@ export default function DownloadPage() {
               ))}
             </ol>
             <p className="mt-6 text-[14px] text-steel-400">
-              Need an access code?{" "}
+              Need an access code? Email{" "}
               <a href={links.contact} className="text-white underline underline-offset-4">
-                Contact us
+                {contact.email}
+              </a>{" "}
+              or call / text{" "}
+              <a href={links.phone} className="whitespace-nowrap text-white underline underline-offset-4">
+                {contact.phone}
               </a>
               .
             </p>
