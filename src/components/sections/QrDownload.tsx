@@ -54,7 +54,7 @@ export async function QrDownload() {
               <span className="qr-scan" aria-hidden />
             </div>
           </div>
-          <p className="spec mt-6 hidden max-w-sm break-all sm:block">{live ? url.replace(/^https?:\/\//, "") : "Set NEXT_PUBLIC_DOWNLOAD_URL to activate"}</p>
+          <p className="spec mt-6 hidden max-w-sm break-all sm:block">{live ? url.replace(/^https?:\/\//, "") : "The download link will be added at launch"}</p>
           <p className="mt-8 text-[14px] text-steel-400 sm:hidden">{copy.qr.mobileHint}</p>
           <StoreButtons className="mt-6 sm:hidden" />
         </div>

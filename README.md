@@ -118,9 +118,17 @@ or Edge.
 ## Deploy
 
 **GitHub Pages (set up):** `.github/workflows/deploy.yml` builds and publishes on
-every push to `main`, at `https://<user>.github.io/<repo>/`. One-time: Settings →
-Pages → Source: GitHub Actions. Store/QR/contact links can be set as repository
-*variables* (`GOOGLE_PLAY_URL`, `APP_STORE_URL`, `DOWNLOAD_URL`, `CONTACT_EMAIL`).
+every push to `main`. The base path and site URL are read from the Pages
+settings, so the same workflow serves `https://<user>.github.io/<repo>/` or a
+custom domain (`pocketpec.space`) at the root. After changing the domain in
+Settings → Pages, re-run the workflow. Store/QR/contact/APK links can be set
+as repository *variables* (`APK_URL`, `GOOGLE_PLAY_URL`, `APP_STORE_URL`,
+`DOWNLOAD_URL`, `CONTACT_EMAIL`).
+
+**Android APK:** set `APK_URL` to the file's public URL to show the
+"Download for Android" button, the `/download/` install page and point the QR
+code at `/download/`. Update `apk` in `src/config/site.ts` (version, size,
+SHA-256) for every new build.
 
 **Elsewhere:** 
 `npm run build` and upload `out/` to any static host (Vercel, Netlify,

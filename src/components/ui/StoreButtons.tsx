@@ -1,4 +1,5 @@
-import { downloads, isPublished, publishedPlatforms, type Store } from "@/config/site";
+import { Download } from "lucide-react";
+import { apk, asset, downloads, isPublished, publishedPlatforms, type Store } from "@/config/site";
 import { cn } from "@/lib/cn";
 
 // Simple Icons (CC0) glyphs. Swap in the official badges from Apple / Google
@@ -37,18 +38,40 @@ function StoreButton({ store }: { store: Store }) {
   );
 }
 
+/** Direct APK download, shown only when `apk.url` is set. */
+function ApkButton() {
+  return (
+    <a className="store-btn !bg-white !text-black" href={apk.url} rel="noopener">
+      <Download size={24} aria-hidden />
+      <span className="flex flex-col items-start leading-none">
+        <span className="text-[10.5px] tracking-wide text-black/60">Download for Android</span>
+        <span className="mt-1 text-[17px] font-semibold tracking-tight">APK · {apk.size}</span>
+      </span>
+    </a>
+  );
+}
+
 /** Store buttons; unpublished stores render as clearly marked "coming soon" placeholders. */
-export function StoreButtons({ className, showNote = true }: { className?: string; showNote?: boolean }) {
+export function StoreButtons({ className, showNote = true, centered = true }: { className?: string; showNote?: boolean; centered?: boolean }) {
   return (
     <div className={className}>
-      <div className="flex flex-wrap items-center justify-center gap-3">
+      <div className={cn("flex flex-wrap items-center gap-3", centered ? "justify-center" : "justify-center lg:justify-start")}>
+        {apk.url && <ApkButton />}
         {downloads.stores.map((s) => (
           <StoreButton key={s.id} store={s} />
         ))}
       </div>
       {showNote && (
-        <p className="spec mt-5 text-center">
+        <p className={cn("spec mt-5 leading-relaxed", centered ? "text-center" : "text-center lg:text-left")}>
           {publishedPlatforms.length ? `Available for ${publishedPlatforms.join(" and ")}` : downloads.pendingNote}
+          {apk.url && (
+            <>
+              {" · "}v{apk.version} · {apk.requires} ·{" "}
+              <a href={asset("/download/")} className="text-steel-300 underline underline-offset-4 hover:text-white">
+                How to install
+              </a>
+            </>
+          )}
         </p>
       )}
     </div>

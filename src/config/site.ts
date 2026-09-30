@@ -11,6 +11,7 @@
  *   NEXT_PUBLIC_DOWNLOAD_URL       where the QR code points (defaults to the
  *                                  first published store link)
  *   NEXT_PUBLIC_CONTACT_EMAIL      contact address in the footer
+ *   NEXT_PUBLIC_APK_URL            direct Android download (enables the APK button)
  */
 
 const env = (value: string | undefined) => (value ?? "").trim();
@@ -74,16 +75,42 @@ export const downloads = {
   pendingNote: "Store links will appear here as soon as Pocket PEC is published.",
 };
 
+/**
+ * Direct Android download (APK), outside the app stores. The button, the
+ * /download page link and "Available for Android" appear only once `url` is set
+ * (env: NEXT_PUBLIC_APK_URL). Update the details with every new build; they were
+ * read from dist/pocket-pec-1.0.0-build1.apk.
+ */
+export const apk = {
+  url: env(process.env.NEXT_PUBLIC_APK_URL),
+  version: "1.0.0 (build 1)",
+  size: "367 MB",
+  requires: "Android 7.0 or later",
+  sha256: "4c2997348127fe07bd28d1a66c5db88f9f48fa2b3ac2286145590b72102e0c1f",
+  /** The app asks for an access code on first launch (internet needed once). */
+  activation: "Activation needs an access code and an internet connection the first time you open the app.",
+};
+
 /** A store button is live only when it has a real URL. */
 export const isPublished = (store: Store) => store.url.length > 0;
 
-export const publishedPlatforms = downloads.stores.filter(isPublished).map((s) => s.platform);
+export const publishedPlatforms = [
+  ...new Set([...(apk.url ? ["Android"] : []), ...downloads.stores.filter(isPublished).map((s) => s.platform)]),
+];
+
+/** The site's own download page (install steps + APK link). */
+export const downloadPage = `${site.url === "https://example.com" ? "" : site.url}${asset("/download/")}`;
 
 /**
- * QR destination. env: NEXT_PUBLIC_DOWNLOAD_URL, else the first published store
- * link. When empty the QR section shows a clearly marked placeholder.
+ * QR destination. env: NEXT_PUBLIC_DOWNLOAD_URL; otherwise the site's /download
+ * page when an APK is published, else the first store link. When empty the QR
+ * section shows a clearly marked placeholder.
  */
-export const qrUrl = env(process.env.NEXT_PUBLIC_DOWNLOAD_URL) || downloads.stores.find(isPublished)?.url || "";
+export const qrUrl =
+  env(process.env.NEXT_PUBLIC_DOWNLOAD_URL) ||
+  (apk.url && downloadPage.startsWith("http") ? downloadPage : "") ||
+  downloads.stores.find(isPublished)?.url ||
+  "";
 
 const contactEmail = env(process.env.NEXT_PUBLIC_CONTACT_EMAIL);
 
