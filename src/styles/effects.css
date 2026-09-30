@@ -444,3 +444,21 @@
     top: 50%;
   }
 }
+
+/* Legal pages */
+.legal a {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.legal ul {
+  list-style: disc;
+  padding-left: 1.25rem;
+}
+.legal ul > li + li {
+  margin-top: 0.45rem;
+}
+.legal strong {
+  color: #fff;
+  font-weight: 600;
+}

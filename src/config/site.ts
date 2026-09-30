@@ -113,6 +113,11 @@ export const qrUrl =
   downloads.stores.find(isPublished)?.url ||
   "";
 
+/** Privacy Policy and Terms of Use. Change `effective` whenever either is revised. */
+export const legal = {
+  effective: "1 October 2026",
+};
+
 /** Public contact details (footer, download page, legal pages). */
 export const contact = {
   email: env(process.env.NEXT_PUBLIC_CONTACT_EMAIL) || "x.ailespel@gmail.com",
